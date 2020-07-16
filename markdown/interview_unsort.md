@@ -59,6 +59,12 @@ SSL涉及到的安全算法会消耗 CPU 资源，对服务器资源消耗较大
 [TCP](https://github.com/Gongyihang/Daily/blob/master/markdown/tcp.md)  
 
 
+## 3.四层网络结构有哪些？  
+1.网络接口层（物理传输通道，可使用多种传输介质传输，可建立在任何物理传输网上。比如光纤、双绞线等等）    
+2.网络层（主要功能是完成网络主机中主机间“分组Packet”的传输。四个协议：IP、ICMP、ARP、RARP）  
+3.传输层（其主要任务是向上一层提供可靠的端到端服务，确保“报文”无差错、有序、不丢失、无重复地传输。它向高层屏蔽了下层数据通信的细节，是计算机通信体系结构中最关键的一层。包含以下2个重要协议：TCP、UDP）  
+4.应用层（应用层确定进程间通信的性质，以满足用户的需要。包含协议譬如：Telnet、FTP、SMTP、POP3、HTTP、NNTP）  
+![](https://iknow-pic.cdn.bcebos.com/0df431adcbef7609c40a753122dda3cc7cd99e1f?x-bce-process=image/resize,m_lfit,w_600,h_800,limit_1)
 
 # 编译原理
 
