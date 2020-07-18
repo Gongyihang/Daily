@@ -430,3 +430,109 @@ set：其内部元素会根据元素的键值自动被排序。区别于map，�
 算法，如排序，复制……以及个容器特定的算法。这点不用过多介绍，主要看下面迭代器的内容。  
 迭代器是STL的精髓，我们这样描述它：迭代器提供了一种方法，使它能够按照顺序访问某个容器所含的各个元素，但无需暴露该容器的内部结构。它将容器和算法分开，好让这二者独立设计。
 
+#### 底层实现原理
+STL 众多容器中，vector 是最常用的容器之一，其底层所采用的数据结构非常简单，就只是一段连续的线性内存空间。  
+通过分析 vector 容器的源代码不难发现，它就是使用 3 个迭代器（可以理解成指针）来表示的：  
+```cpp
+//_Alloc 表示内存分配器，此参数几乎不需要我们关心
+template <class _Ty, class _Alloc = allocator<_Ty>>
+class vector{
+    ...
+protected:
+    pointer _Myfirst;
+    pointer _Mylast;
+    pointer _Myend;
+};
+```
+其中，_Myfirst 指向的是 vector 容器对象的起始字节位置；_Mylast 指向当前最后一个元素的末尾字节；_myend 指向整个 vector 容器所占用内存空间的末尾字节。
+![](http://c.biancheng.net/uploads/allimg/191212/2-191212123P2Q5.gif)  
+
+图 1 演示了以上这 3 个迭代器分别指向的位置。
+如图 1 所示，通过这 3 个迭代器，就可以表示出一个已容纳 2 个元素，容量为 5 的 vector 容器。
+
+在此基础上，将 3 个迭代器两两结合，还可以表达不同的含义，例如：  
+_Myfirst 和 _Mylast 可以用来表示 vector 容器中目前已被使用的内存空间；  
+_Mylast 和 _Myend 可以用来表示 vector 容器目前空闲的内存空间；  
+_Myfirst 和 _Myend 可以用表示 vector 容器的容量。  
+对于空的 vector 容器，由于没有任何元素的空间分配，因此 _Myfirst、_Mylast 和 _Myend 均为 null。  
+通过灵活运用这 3 个迭代器，vector 容器可以轻松的实现诸如首尾标识、大小、容器、空容器判断等几乎所有的功能，比如：  
+```cpp
+template <class _Ty, class _Alloc = allocator<_Ty>>
+class vector{
+public：
+    iterator begin() {return _Myfirst;}
+    iterator end() {return _Mylast;}
+    size_type size() const {return size_type(end() - begin());}
+    size_type capacity() const {return size_type(_Myend - begin());}
+    bool empty() const {return begin() == end();}
+    reference operator[] (size_type n) {return *(begin() + n);}
+    reference front() { return *begin();}
+    reference back() {return *(end()-1);}
+    ...
+};
+```
+vector扩大容量的本质
+另外需要指明的是，当 vector 的大小和容量相等（size==capacity）也就是满载时，如果再向其添加元素，那么 vector 就需要扩容。vector 容器扩容的过程需要经历以下 3 步：
+完全弃用现有的内存空间，重新申请更大的内存空间；  
+将旧内存空间中的数据，按原有顺序移动到新的内存空间中；  
+最后将旧的内存空间释放。  
+这也就解释了，为什么 vector 容器在进行扩容后，与其相关的指针、引用以及迭代器可能会失效的原因。  
+
+由此可见，vector 扩容是非常耗时的。为了降低再次分配内存空间时的成本，每次扩容时 vector 都会申请比用户需求量更多的内存空间（这也就是 vector 容量的由来，即 capacity>=size），以便后期使用。  
+vector 容器扩容时，不同的编译器申请更多内存空间的量是不同的。以 VS 为例，它会扩容现有容器容量的 50%。  
+
+使用reserve来避免不必要的重新分配（vector）  
+reserve可以强迫容器把它的容量变为至少是n，前提是n不小于当前的大小。  
+
+
+[条目十四《使用reserve来避免不必要的重新分配》](https://www.cnblogs.com/liangjf/p/10259684.html)  
+使用vector和string的插入元素的时候，我们是不用担心内存问题的（只要不超过容器的max_size）。因为底层有分配子管理内存。在插入元素的时候，内存不够会发生像realloc的过程：
+
+分配新的内存块,它有容器目前容量的几倍。在大部分实现中,vector和string的容量每次以2为因数增
+长。也就是说,当容器必须扩展时,它们的容量每次翻倍。
+把所有元素从容器的旧内存拷贝到它的新内存。
+销毁旧内存中的对象。
+回收旧内存
+先看个例子
+```cpp
+vector<int> vec;
+for(int i = 0; i < 10; i++)
+{
+    vec.push_back(i)
+}
+```
+这个过程会发生最少4次重新分配内存的过程。再来看下一个重新分配内存涉及到哪些过程：
+
+1.new操作-->malloc
+2.拷贝操作
+3.析构对象
+4.释放内存
+咋一看，一两次还可以接受，当插入的元素越来越多的时候，对性能的消耗是非常客观的。
+
+上面的问题还只是其中一个问题，在插入元素时，重新分配内存会造成迭代器、指针和引用的失效。
+
+为了优化这两个问题，在使用vector和string的时候，可以使用reserve函数。先引出四个关于容器大小和设置的成员函数：
+
+size()———————获得容器的元素个数
+
+capacity()———获得容器的容量
+
+resize()—————强制设置容器的元素个数（参数大于当前大小，调用默认构造函数创建元素填充在尾部。小于当前大小，会析构并销毁多余的元素）
+
+reserve()————强制设置容器的容量大小（参数小于现有的容量大小会忽略当前调用，大于会扩容。）
+
+为了避免容器的不必要扩容而造成的消耗，在初始化容器的时候可以通过reserve()设置容器的容量大小，这样在插入元素的是够，只要当前的元素个数小于容量大小，都不会发生重新分配内存。这样也就不会发生迭代器、指针和引用失效等问题，也就没有多次拷贝，析构对象，释放内存的现象发生。
+```cpp
+vector<int> vec;
+vec.reserve(15);
+for(int i = 0; i < 10; i++)
+{
+    vec.push_back(i)
+}
+```
+这个过程在reserve后插入元素不会发生重新分配内存过程。因为，插入的元素个数(10)小于容量的大小(15)。
+
+可能有人说，在开始时设置过多的容量，那么不就相当于数组吗？浪费了剩余没用到内存，不用担心这个问题，我们可以等插入元素完毕的时候：
+
+调用sesize()来修剪大小
+使用swap()技巧。（vector tmp_vec(vec).swap(vec) 利用容器的拷贝构造不会复制空内存的原理，先创建一个纯净的临时容器，然后再交换容器内容，原来的容器就可以成为一个没有多余容量的容器，节省内存哦）
