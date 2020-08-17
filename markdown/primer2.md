@@ -44,8 +44,8 @@ String::String(const String& str){}
 为什么叫赋值呢？是对操作符=的重载  
 ```cpp
 String& String::operator=(const String& str){
-    if(this == &str){
-        return *this;
+    if(this == &str){//拷贝赋值一定要考虑是不是自我赋值
+        return *this;//必须做这个检查，譬如有一个对象，有另一个指针同时指向这个对象
     }
 
     //三步操作：
