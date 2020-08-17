@@ -30,3 +30,34 @@ double+复数
 
 
 在类的内部声明的函数为成员函数，friend友元函数支持访问本类的数据  
+
+
+
+带指针的类：（Big Three 三个特殊函数：拷贝构造函数、拷贝赋值函数、析构函数）  
+构造函数和析构函数  
+拷贝构造函数：  
+为什么叫拷贝呢？因为它接收的类型就是这个类它自己的类型 
+```cpp 
+String::String(const String& str){}
+```
+拷贝赋值函数：  
+为什么叫赋值呢？是对操作符=的重载  
+```cpp
+String& String::operator=(const String& str){
+    if(this == &str){
+        return *this;
+    }
+
+    //三步操作：
+    delete[] m_data;//自杀
+    m_data = new char[strlen(str.m_data) + 1];//分配空间
+    strcpy(m_data,str.m_data);//拷贝
+    return *this;
+}
+```
+对<<的重载函数一定要是全局函数，而不是成员函数，否则 << 就不是对cout操作了。  
+
+
+
+
+
