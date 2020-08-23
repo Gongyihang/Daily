@@ -75,5 +75,3 @@ String* p = new String[3];
 delete[] p;//调用3次析构函数
 delete p;//调用1次析构函数，造成“指针指向的地方”内存泄漏
 ```  
-
-
