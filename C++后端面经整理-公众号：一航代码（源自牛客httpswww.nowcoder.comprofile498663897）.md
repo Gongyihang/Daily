@@ -309,7 +309,7 @@ mkdir coredumpTest
 vim coredumpTest.cpp
 ```
 在编辑器内键入
-```
+```cpp
 #include<stdio.h>
 int main(){
     int i;
@@ -353,7 +353,7 @@ inline是内联的意思，可以定义比较小的函数。因为函数频繁�
 编译器会对函数模板进行两次编译：在声明的地方对模板代码本身进行编译，这次编译只会进行一个语法检查，并不会生成具体的代码。在运行时对代码进行参数替换后再进行编译，生成具体的函数代码。
 #### （44） 成员初始化列表的概念，为什么用成员初始化列表会快一些（性能优势）？
 成员初始化列表就是在类或者结构体的构造函数中，在参数列表后以冒号开头，逗号进行分隔的一系列初始化字段。如下：
-```
+```cpp
 class A{
 int id;
 string name;
@@ -471,7 +471,7 @@ https://www.cnblogs.com/zhuguanhao/p/6286145.html
 
 有元函数是定义在类外的普通函数，不属于任何类，可以访问其他类的私有成员。但是需要在类的定义中声明所有可以访问它的友元函数。
 
-```
+```cpp
 #include <iostream>
 
 using namespace std;
@@ -506,7 +506,7 @@ int main(void)
 友元类的所有成员函数都是另一个类的友元函数，都可以访问另一个类中的隐藏信息（包括私有成员和保护成员）。        
 但是另一个类里面也要相应的进行声明
 
- ```
+ ```cpp
  #include <iostream>
 
 using namespace std;
@@ -922,7 +922,7 @@ https://www.cnblogs.com/takumicx/p/9998844.html
 
 #### （6） MySQL怎么建立索引，怎么建立主键索引，怎么删除索引？
 MySQL建立索引有两种方式：用alter table或者create index。
-```
+```sql
 alter table table_name add primary key(column_list) #添加一个主键索引
 alter table table_name add index (column_list)      #添加一个普通索引
 alter table table_name add unique (column_list)     #添加一个唯一索引
@@ -1381,11 +1381,11 @@ https://zhuanlan.zhihu.com/p/141602175
 （面试官这样问的时候，其实是希望你能讲讲虚拟内存）
 #### （7） 实现一个LRU算法
 用到两个数据结构：哈希+双向链表 
-```
+```cpp
 unordered_map<int,list<pair<int,int> > > cache ;// 存放键，迭代器
 list<pair<int,int>> auxlist; // 存放 <键，值>
 ```
-```
+```cpp
 class LRUCache {
     int cap;
     list<pair<int,int>> l;// front:new back:old 存放值 新的放前面，因为前面的可以取得有效的迭代器
@@ -1880,7 +1880,7 @@ Quick Select脱胎于快速排序，提出这两个算法的都是同一个人�
 如果左边的数组元素个数小于K，则第K大的数肯定在右边数组中，对右边数组执行相同操作。
 
 这个算法与快排最大的区别是，每次划分后只处理左半边或者右半边，而快排在划分后对左右半边都继续排序。
-```
+```java
 //此为Java实现
 public int findKthLargest(int[] nums, int k) {
   return quickSelect(nums, k, 0, nums.length - 1);
@@ -2112,7 +2112,7 @@ RandNN= N( RandN()-1 ) + RandN() ;// 生成1到N^2之间的随机数
 可以看作是在数轴上撒豆子。N是跨度/步长，是RandN()生成的数的范围长度，RandN()-1的目的是生成0到N-1的数，是跳数。后面+RandN()的目的是填满中间的空隙
 ```
 比如` Rand25= 5( Rand5()-1 ) + Rand5()`可以生成1到25之间的随机数。我们可以只要1到21（3*7）之间的数字，所以可以这么写
-```
+```cpp
 int rand7(){
   int x=INT_MAX;
   while(x>21){
