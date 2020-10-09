@@ -1,8 +1,8 @@
-#include <iostream>
 #include <algorithm>
-#include <vector>
-#include <string>
+#include <iostream>
 #include <math.h>
+#include <string>
+#include <vector>
 using namespace std;
 /*
 Input：42 42 42 42 42 55 55 62 100 100 100^Z
@@ -15,17 +15,12 @@ Output:
 int main()
 {
     int currval = 0, val = 0;
-    if (cin >> currval)
-    {
+    if (cin >> currval) {
         int count = 1;
-        while (cin >> val)
-        {
-            if (currval == val)
-            {
+        while (cin >> val) {
+            if (currval == val) {
                 count++;
-            }
-            else
-            {
+            } else {
                 cout << currval << " occurs " << count << " times" << endl;
                 currval = val;
                 count = 1;

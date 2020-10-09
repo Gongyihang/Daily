@@ -23,33 +23,29 @@
 1 <= nums.length <= 500
 1 <= nums[i] <= 10^5
 */
-#include <iostream>
 #include <algorithm>
-#include <vector>
-#include <string>
-#include <math.h>
+#include <iostream>
 #include <map>
+#include <math.h>
 #include <set>
+#include <string>
+#include <vector>
 using namespace std;
 
-class Solution
-{
+class Solution {
 public:
-    int findNumbers(vector<int> &nums)
+    int findNumbers(vector<int>& nums)
     {
         int count = 0, count_evev = 0;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            while (nums[i] != 0)
-            {
+        for (int i = 0; i < nums.size(); i++) {
+            while (nums[i] != 0) {
                 nums[i] /= 10;
                 count++;
             }
-            if (count % 2 == 0)
-            {
+            if (count % 2 == 0) {
                 count_evev++;
             }
-            count = 0;//重置count
+            count = 0; //重置count
         }
         return count_evev;
     }
@@ -59,7 +55,7 @@ int main()
 {
     Solution s;
 
-    vector<int> num = {437,315,322,431,686,264,442};
+    vector<int> num = { 437, 315, 322, 431, 686, 264, 442 };
 
     int count_even = s.findNumbers(num);
     printf("%d\n", count_even);
