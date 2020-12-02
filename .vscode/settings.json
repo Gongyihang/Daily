@@ -1,8 +1,8 @@
 {
 "code-runner.runInTerminal": true, // 设置成false会在“输出”中输出，无法输入
     "code-runner.executorMap": {
-        "c": "cd $dir && gcc '$fileName' -o C:/Users/Monotony/Desktop/Daily/exe/$fileNameWithoutExt.exe -Wall -g -Og -static-libgcc -std=c11 && C:/Users/Daily/Desktop/PAT/exe/$fileNameWithoutExt.exe",
-        "cpp": "cd $dir && g++ '$fileName' -o C:/Users/Monotony/Desktop/Daily/exe/$fileNameWithoutExt.exe -Wall -g -Og -static-libgcc -std=c++17 && C:/Users/Daily/Desktop/PAT/exe/$fileNameWithoutExt.exe"
+        "c": "cd $dir && gcc '$fileName' -o C:/Users/Monotony/Desktop/Daily/exe/$fileNameWithoutExt.exe -Wall -g -Og -static-libgcc -std=c11 && C:/Users/Monotony/Desktop/Daily/exe/$fileNameWithoutExt.exe",
+        "cpp": "cd $dir && g++ '$fileName' -o C:/Users/Monotony/Desktop/Daily/exe/$fileNameWithoutExt.exe -Wall -g -Og -static-libgcc -std=c++17 && C:/Users/Monotony/Desktop/Daily/exe/$fileNameWithoutExt.exe"
         // "c": "cd $dir && gcc '$fileName' -o $direxe\\$fileNameWithoutExt.exe -Wall -g -Og -static-libgcc -std=c11 && $direxe\\$fileNameWithoutExt.exe",
         // "cpp": "cd $dir && g++ '$fileName' -o $direxe\\$fileNameWithoutExt.exe -Wall -g -Og -static-libgcc -std=c++17 && $direxe\\$fileNameWithoutExt.exe"
         // "c": "cd $dir && gcc $fileName -o C:/Users/Monotony/Desktop/cpp/exe/$fileNameWithoutExt.exe -Wall -g -Og -static-libgcc -std=c11 && C:/Users/Monotony/Desktop/cpp/exe/$fileNameWithoutExt.exe",
