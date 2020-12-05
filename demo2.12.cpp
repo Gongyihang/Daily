@@ -60,14 +60,14 @@ int main()
     //字符
     char ch;
     //字符串
-    char *s = "huihuikaoyan";
+    char *s = (char*)"huihuikaoyan";//会有警告
     //字符数组
     char c1[13] = "huihuikaoyan"; //长度必须比定义的字符串长度要长，因为字符串以\0为末尾，占一个位置
     //字符串一维、二维数组
     char *c2[100];
     char *c3[100][100];
 
-    for (int i = 0; i < strlen(s); i++)
+    for (int i = 0; i < (int)strlen(s); i++)
     {
         printf("%c", s[i]);
     }
